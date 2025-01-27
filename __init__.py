@@ -1,15 +1,22 @@
-from routes import index
-from flask import Flask
-from flask import render_template
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def main():
-    index()
-    
+def index():
+    return render_template('index.html')
 
 
-if __name__ == '__main__':
+@app.route("/juegos")
+def juegos():
+    return render_template('juegos.html')
+
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+
+if __name__ == "__main__":
     app.run(debug=True)
