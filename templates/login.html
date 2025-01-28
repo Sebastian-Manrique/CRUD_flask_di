@@ -13,15 +13,17 @@
         <div class="div1">
             <div class="containerF">
                 <h1>Area de admin</h1>
-                <form onsubmit="agarrarDatos(); return false;"> <!--He puesto sumbit porque POST me daba error-->
+                <form onsubmit="agarrarDatos('admin'); return false;">
+                    <!-- AREA DE ADMIN -->
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
 
                     <label for="name">Contraseña:</label>
-                    <input type="password" id="passAdmin" name="password" required>
-                    <div id="welcomeDiv2" style="display:none;" class="answer_list">
+                    <input type="password" id="passAdmin" name="password" onclick="botonMostrarContra('admin')"
+                        required>
+                    <div id="divBotonMostrarAdmin" style="display:none;" class="answer_list">
                         <!-- Quiero que cuando le des a la contraseña de empleado o admin este cartel ↓↓↓ se muestre dependiendo del lado al que le diste clic-->
-                        <input type="checkbox" onclick="myFunction()">Mostrar contraseña
+                        <input type="checkbox" onclick="mostrarContra('admin')">Mostrar contraseña
                     </div>
                     <br>
                     <br>
@@ -32,16 +34,17 @@
         <div class="div2">
             <div class="containerF">
                 <h1>Area de empleo</h1>
-                <form onsubmit="agarrarDatos(); return false;"> <!--He puesto sumbit porque POST me daba error-->
+                <form onsubmit="agarrarDatos('empleado'); return false;">
+                    <!-- AREA DE EMPLEADO -->
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="emailEmpleado" name="email" required>
 
                     <label for="name">Contraseña:</label>
-                    <input type="password" id="passEmpleado" name="password" onclick="myFunction2()"
-                        onfocusout="myFunction3()" required>
-                    <div id="welcomeDiv" style="display:none;" class="answer_list">
+                    <input type="password" id="passEmpleado" name="password" onclick="botonMostrarContra('empleado')"
+                        required>
+                    <div id="divBotonMostrarEmpleado" style="display:none;" class="answer_list">
                         <!-- Quiero que cuando le des a la contraseña de empleado o admin este cartel ↓↓↓ se muestre dependiendo del lado al que le diste clic-->
-                        <input type="checkbox" onclick="myFunction()">Mostrar contraseña
+                        <input type="checkbox" onclick="mostrarContra('empleado')">Mostrar contraseña
                     </div>
                     <br>
                     <br>
