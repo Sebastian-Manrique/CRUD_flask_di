@@ -18,16 +18,15 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
 
-                    <label for="name">Contraseña:</label>
+                    <label for="contraAdmin">Contraseña:</label>
                     <input type="password" id="passAdmin" name="password" onclick="botonMostrarContra('admin')"
                         required>
                     <div id="divBotonMostrarAdmin" style="display:none;" class="answer_list">
-                        <!-- Quiero que cuando le des a la contraseña de empleado o admin este cartel ↓↓↓ se muestre dependiendo del lado al que le diste clic-->
                         <input type="checkbox" onclick="mostrarContra('admin')">Mostrar contraseña
                     </div>
                     <br>
                     <br>
-                    <input type="submit" />
+                    <input type="submit" value="Entrar" />
                 </form>
             </div>
         </div>
@@ -39,20 +38,21 @@
                     <label for="email">Email:</label>
                     <input type="email" id="emailEmpleado" name="email" required>
 
-                    <label for="name">Contraseña:</label>
+                    <label for="contra">Contraseña:</label>
                     <input type="password" id="passEmpleado" name="password" onclick="botonMostrarContra('empleado')"
                         required>
                     <div id="divBotonMostrarEmpleado" style="display:none;" class="answer_list">
-                        <!-- Quiero que cuando le des a la contraseña de empleado o admin este cartel ↓↓↓ se muestre dependiendo del lado al que le diste clic-->
                         <input type="checkbox" onclick="mostrarContra('empleado')">Mostrar contraseña
                     </div>
                     <br>
                     <br>
-                    <input type="submit" />
+                    <input type="submit" value="Entrar" />
                 </form>
             </div>
         </div>
     </div>
+    <button type="button" onclick="window.location.href='/registrarte';" style="color: black;">¿No tienes
+        cuenta? Registrate</button>
     <div class="div3">
         <div class="bubbles">
             <span style="--i:12;"></span><span style="--i:24;"></span><span style="--i:10;"></span>
@@ -80,6 +80,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </main>
 {% endblock %}

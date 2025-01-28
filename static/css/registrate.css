@@ -89,6 +89,7 @@ body {
   /* Burbujas del fondo*/
   position: relative;
   display: flex;
+  border: solid 10px red;
 }
 .bubbles span {
   /*El monton de burbujas*/
