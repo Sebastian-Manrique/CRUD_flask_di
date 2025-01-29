@@ -38,7 +38,8 @@ input[type="datetime-local"] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-input[type="submit"] {
+input[type="submit"],
+#enviar {
   width: 100%;
   padding: 10px;
   background-color: #4caf50;
@@ -207,10 +208,18 @@ img {
   border-right: 1px black solid; /*Border para ver el final*/
 }
 
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  padding-top: 5%;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 .divCrear {
-  border: solid 1px green;
-  text-align: center;
-  padding-top: 5vh;
+  height: 200px;
+  position: relative;
 }
 footer {
   position: absolute;

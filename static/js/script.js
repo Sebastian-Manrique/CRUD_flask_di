@@ -31,7 +31,7 @@ async function callAPI(contra, email) {
       return response.json();
     })
     .then((data) => {
-      // console.log(data);
+      console.log(data);
     });
 }
 

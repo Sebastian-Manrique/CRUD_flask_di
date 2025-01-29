@@ -4,7 +4,7 @@ body {
   padding: 0;
   transform-origin: top left;
   transform: scale(1);
-  min-height: 50vh;
+  min-height: 90vh;
   background-color: #0d1117;
 }
 ::-webkit-scrollbar {
@@ -15,6 +15,7 @@ body {
   /* Burbujas del fondo*/
   position: relative;
   display: flex;
+  bottom: -80vh;
 }
 .bubbles span {
   /*El monton de burbujas*/
@@ -26,7 +27,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 0 10px #4fc3dc44, 0 0 50px #4fc3dc, 0 0 100px #4fc3dc;
   animation: animate 15s linear infinite;
-  animation-duration: calc(250s / var(--i));
+  animation-duration: calc(150s / var(--i));
 }
 .bubbles span:nth-child(even) {
   /*aplica estilos específicos a todos los elementos <span> que son hijos pares de bubble*/
@@ -40,7 +41,7 @@ body {
     transform: translateY(10vh) scale(0);
   }
   100% {
-    transform: translateY(-300vh) scale(1);
+    transform: translateY(-100vh) scale(1);
   }
 }
 

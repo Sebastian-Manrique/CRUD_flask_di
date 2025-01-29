@@ -32,17 +32,17 @@ input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="datetime-local"] {
-  width: 100%;
+  width: 25%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-input[type="submit"] {
-  width: 100%;
+#enviar {
+  width: 25%;
   padding: 10px;
   background-color: #4caf50;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -89,7 +89,6 @@ body {
   /* Burbujas del fondo*/
   position: relative;
   display: flex;
-  border: solid 10px red;
 }
 .bubbles span {
   /*El monton de burbujas*/

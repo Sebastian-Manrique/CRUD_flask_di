@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi Proyecto Web{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    {% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    {% endblock %}
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <a href="/"><img id="flag" alt="ImagenMando" src="../static/img/mando.png"></a>
+    <header>
+        <ul>
+            <li><a href="/juegos">Juegos</a></li>
+            <li><a href="/login">Iniciar sesión</a></li>
+        </ul>
+    </header>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+    {% block bubbles %}
+
+    {% endblock %}
+    <div class="bubbles">
+        <span style="--i:12;"></span><span style="--i:24;"></span><span style="--i:10;"></span>
+        <span style="--i:14;"></span><span style="--i:23;"></span><span style="--i:18;"></span>
+        <span style="--i:16;"></span><span style="--i:19;"></span><span style="--i:20;"></span>
+        <span style="--i:22;"></span><span style="--i:25;"></span><span style="--i:18;"></span>
+        <span style="--i:21;"></span><span style="--i:15;"></span><span style="--i:13;"></span>
+        <span style="--i:26;"></span><span style="--i:17;"></span><span style="--i:13;"></span>
+        <span style="--i:28;"></span><span style="--i:11;"></span><span style="--i:12;"></span>
+        <span style="--i:24;"></span><span style="--i:10;"></span><span style="--i:14;"></span>
+        <span style="--i:23;"></span><span style="--i:18;"></span><span style="--i:16;"></span>
+        <span style="--i:19;"></span><span style="--i:20;"></span><span style="--i:22;"></span>
+        <span style="--i:25;"></span><span style="--i:18;"></span><span style="--i:21;"></span>
+        <span style="--i:15;"></span><span style="--i:13;"></span><span style="--i:26;"></span>
+        <span style="--i:17;"></span><span style="--i:13;"></span><span style="--i:28;"></span>
+        <span style="--i:11;"></span><span style="--i:12;"></span> <span style="--i:24;"></span>
+        <span style="--i:10;"></span> <span style="--i:14;"></span><span style="--i:23;"></span>
+        <span style="--i:18;"></span><span style="--i:16;"></span> <span style="--i:19;"></span>
+        <span style="--i:20;"></span>
+    </div>
+    <footer>
+        <p>&copy;2025 Crud game manager, Inc.</p>
+        <a href="https://github.com/Sebastian-Manrique" target="blanc"><img id="flagFooter" alt="img"
+                src="../static/img/gitHub.png"></a>
+    </footer>
+</body>
+
+</html>
