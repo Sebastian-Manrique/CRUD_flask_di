@@ -185,9 +185,6 @@ th {
 table img {
   height: 100px;
 }
-img {
-  opacity: 0.6;
-}
 .parent {
   /*Creador del grid*/
   display: grid;

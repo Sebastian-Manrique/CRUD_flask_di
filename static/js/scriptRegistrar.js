@@ -13,6 +13,12 @@ function mostrarContra() {
   }
 }
 
+function cambiarCuenta() {
+  /*Funcion para el onclick del switch para cambiar el texto*/
+  var usuario = document.getElementById("seleccionCuenta");
+  usuario.innerHTML = usuario.innerHTML == "Usuario" ? "Admin" : "Usuario";
+}
+
 function botonMostrarContra() {
   // Para mostrar o no la contraseña
   document.getElementById("divBotonMostrar").style.display = "block";
@@ -23,6 +29,7 @@ function crearUsuario() {
   var contra = document.getElementById("passCrear");
   var confirmarContra = document.getElementById("passCrearConfirmar");
   var email = document.getElementById("emailCrear");
+  var usuarioTipo = document.getElementById("seleccionCuenta").innerHTML;
 
   if (
     contra.value == "" ||
@@ -39,24 +46,26 @@ function crearUsuario() {
     return;
   }
 
-  //   console.log(
-  //     //  debug
-  //     "Usuario: " +
-  //       usuario.value +
-  //       "\ncorreo: " +
-  //       email.value +
-  //       "\nContraseña: " +
-  //       contra.value
-  //   );
-  callCreate(usuario.value, contra.value, email.value);
+  // console.log(
+  //   //  debug
+  //   "Usuario: " +
+  //     usuario.value +
+  //     "\ncorreo: " +
+  //     email.value +
+  //     "\nContraseña: " +
+  //     contra.value +
+  //     "\nTipo de usuario: " +
+  //     usuarioTipo
+  // );
+  callCreate(usuario.value, contra.value, email.value, usuarioTipo);
 }
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
-async function callCreate(usuario, contra, email) {
+async function callCreate(usuario, contra, email, tipo) {
   try {
     const response = await fetch(
-      `/api/crearCuenta?_usuario=${usuario}&_contra=${contra}&_email=${email}`
+      `/api/crearCuenta?_usuario=${usuario}&_contra=${contra}&_email=${email}&_tipo=${tipo}`
     );
 
     if (!response.ok) {
@@ -64,7 +73,7 @@ async function callCreate(usuario, contra, email) {
     }
 
     const data = await response.json();
-    console.log(data);
+    // console.log(data); //DEBUG
 
     // Esperar 1 segundos antes de redirigir
     await delay(1000);

@@ -38,7 +38,7 @@ input[type="datetime-local"] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-#enviar {
+input[type="submit"] {
   width: 25%;
   padding: 10px;
   background-color: #4caf50;
@@ -53,6 +53,69 @@ input[type="submit"]:hover {
 * {
   box-sizing: border-box;
 }
+
+/* Contenedor para centrar el switch */
+.switch-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  padding-bottom: 17px;
+}
+
+.switch {
+  /* De aquí para abajo es el switch */
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #4fc3dc;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 /*De aqui para arriba es el form*/
 * {
   /*Aplicamos la fuente a todo*/
@@ -183,9 +246,6 @@ th {
 }
 table img {
   height: 100px;
-}
-img {
-  opacity: 0.6;
 }
 .parent {
   /*Creador del grid*/

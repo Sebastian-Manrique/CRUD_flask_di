@@ -13,31 +13,35 @@
     <div class="divCrear">
         <p style="text-align: center;"></p>
         <h1>Registrate</h1>
-        <form>
+        <form onsubmit="crearUsuario(); return false;">
             <!-- Crear cuenta  -->
-            <label for="name">Nombre de usuario:</label>
+            <label for="usuarioCrear">Nombre de usuario:</label>
             <input type="text" id="usuarioCrear" name="name" required>
 
-            <label for="email">Correo electronico:</label>
+            <label for="emailCrear">Correo electronico:</label>
             <input type="email" id="emailCrear" name="email" required>
 
-            <label for="contra">Contraseña:</label>
+
+            <label for="passCrear">Contraseña:</label>
             <input type="password" id="passCrear" name="password" onclick="botonMostrarContra()" required>
 
-            <label for="contra">Confirmar contraseña:</label>
+            <label for="passCrearConfirmar">Confirmar contraseña:</label>
             <input type="password" id="passCrearConfirmar" name="password" onclick="botonMostrarContra()" required>
 
             <div id="divBotonMostrar" style="display:none;" class="answer_list">
                 <input type="checkbox" onclick="mostrarContra()">Mostrar contraseña
             </div>
-            <br>
-            <br>
-            <!-- Comprobar que se ha intruducido bien el correo -->
-            <!-- Comprobar que el correo no esta siendo ya usado -->
-            <!-- cambiar empleado por usuario -->
-            <!-- añadir un tick, que sea para usuario o admin -->
-            <!-- cuando cree un un usuario, que me rediriga a una pagina de "Todo ok" -->
-            <button id="enviar" type="button" onclick="crearUsuario()">Registrar</button>
+
+            <div class="switch-container">
+                <p id="seleccionCuenta">Usuario</p>
+                &nbsp;
+                <label class="switch">
+                    <input type="checkbox" onclick="cambiarCuenta()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <input type="submit" value="Registrar" />
         </form>
     </div>
 </main>
