@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_login import LoginManager
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-
+import sqlite3
 
 app = Flask(__name__,  template_folder='templates')
 app.config['SECRET_KEY'] = '59e8a54219daca75ced6c672e77307e93efcdeae44cdc0279ab981d6086ded3a'
@@ -38,6 +38,11 @@ def registrarte():
     return render_template('registrate.html')
 
 
+@app.route("/hecho")
+def hecho():
+    return render_template('hecho.html')
+
+
 @app.route('/protected')
 @login_required
 def protected():
@@ -70,18 +75,36 @@ def apiLlamada():
         print(f"Estos son los datos, contra: {contra} y email: {email}")
         return jsonify({"contra": contra, "email": email}), 200
 
+
 @app.route("/api/crearCuenta")
 def crearCuenta():
     usuario = request.args.get("_usuario", type=str)
     contra = request.args.get("_contra", type=str)
     email = request.args.get("_email", type=str)
 
-    if contra == "any_":
-        # Esto si es para todos los partidos, ya que tiene que hacer la peticion a otra API
-        print(f"Estos son los datos, {contra} y {email}")
-        return jsonify({"message": "Datos mal recibidos"}), 200
-    else:
-        return jsonify({"usuario": usuario, "contra": contra, "email": email}), 200
+    crearBD(usuario, contra, email)
+    return jsonify({"usuario": usuario, "contra": contra, "email": email}), 200
+
+
+def crearBD(usuario, contra, email):
+    """SQLite y la tabla USUARIOS, parametros: ID, NOMBRE, CORREO,CONTRASENA, PUNTUACION"""
+    try:
+        conn = sqlite3.connect('usuarios.db')
+        cursor = conn.cursor()
+
+        # Insertar nuevo usuario
+        cursor.execute("INSERT INTO USUARIOS (NOMBRE, CORREO, CONTRASENA) VALUES (?, ?, ?)",
+                       (usuario, email, contra))
+
+        conn.commit()
+        print("Usuario insertado con éxito")
+
+    except sqlite3.Error as error:
+        print(f"Error al insertar usuario: {error}")
+
+    finally:
+        if conn:
+            conn.close()
 
 
 if __name__ == "__main__":

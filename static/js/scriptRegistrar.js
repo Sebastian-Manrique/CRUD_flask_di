@@ -51,17 +51,26 @@ function crearUsuario() {
   callCreate(usuario.value, contra.value, email.value);
 }
 
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
 async function callCreate(usuario, contra, email) {
-  const response = await fetch(
-    `/api/crearCuenta?_usuario=${usuario}&_contra=${contra}&_email=${email}`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-    });
+  try {
+    const response = await fetch(
+      `/api/crearCuenta?_usuario=${usuario}&_contra=${contra}&_email=${email}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+
+    // Esperar 1 segundos antes de redirigir
+    await delay(1000);
+
+    window.location.replace("/hecho");
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }

@@ -221,18 +221,31 @@ img {
   height: 200px;
   position: relative;
 }
-footer {
-  position: absolute;
-  left: 0;
-  bottom: -5vh;
-  width: 100%;
-  color: black;
-  text-align: center;
-}
+
+/*De aqui para abajo es el footer */
 #flagFooter {
-  /*Icono de GitHub*/
-  position: absolute;
-  left: 75vb;
-  top: -4vh;
-  height: 100px;
+  height: 10vh;
+  max-height: 100px;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  flex-wrap: wrap;
+  position: fixed;
+  bottom: -10vh;
+  width: 100%;
+}
+
+footer p,
+footer a {
+  margin: 0 20px;
+  padding: 0;
+}
+
+footer a {
+  display: flex;
+  align-items: center;
 }
