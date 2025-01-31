@@ -7,10 +7,24 @@
 
 {% block content %}
 <main>
-    <h1>Tus juegos:</h1>
+    <h1>Hola {{usuario.nombre}} estos son tus juegos:</h1>
 
-    <button id="botonCrearJuego" onclick="crearJuego()">Crear juego</button>
+    <button id="botonCrearJuego" onclick="crearJuego()">Crear juego +</button>
 
     <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar sesion</button>
+
+    <div id="juegos">
+
+    </div>
+
+    <div id="tusDatos">
+        <h2>Informacion de tu cuenta:</h2>
+        <p>{{usuario.nombre}}</p>
+        <p>{{usuario.id}}</p>
+        <p>{{usuario.correo}}</p>
+        <p>{{usuario.contrasena}}</p>
+        <p>{{usuario.admin}}</p>
+    </div>
+    <script src="{{ url_for('static', filename='js/juegos.js') }}"></script>
 </main>
 {% endblock %}

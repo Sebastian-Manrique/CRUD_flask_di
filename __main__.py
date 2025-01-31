@@ -1,17 +1,29 @@
+from dbManager import DATABASE_URL, engine, Session
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_login import LoginManager
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-import sqlite3
+from routes import simple_page
+from flask_sqlalchemy import SQLAlchemy
+from models import Usuario, db
 
 app = Flask(__name__)
 app.secret_key = '59e8a54219daca75ced6c672e77307e93efcdeae44cdc0279ab981d6086ded3a'
+app.register_blueprint(simple_page)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///usuarios.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+
+# Añadir si pasa el raton cerca de las burbujas estan se muevan
+# Añadir funcionalidad de juegos para que se muestren y se añadan a la base de datos
 # Para encriptar y comprobar la contraseña from werkzeug. security import generate_password hash, check_password hash
-# Añadir gif de carga a la hora de registrarse
 # Comprobar que el correo no esta siendo ya usado
 # Cambiar empleado por usuario
 # Cuando cree un un usuario, que me rediriga a una pagina de "Todo ok"
-# Añadir cosas de SQL Alchemy
 
 # Inicializar el LoginManager
 login_manager = LoginManager()
@@ -30,41 +42,28 @@ def load_user(user_id):
     return User(user_id)
 
 
-@app.route('/')
-def main():
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
     return render_template('main.html')
-
-
-@app.route("/inicio")
-def juegos():
-    return render_template('juegos.html')
-
-
-@app.route("/registrate")
-def registrarte():
-    return render_template('registrate.html')
-
-
-@app.route("/hecho")
-def hecho():
-    return render_template('hecho.html')
 
 
 @app.route('/protected')
 @login_required
 def protected():
-    return f'Hola, {current_user.id}! Esta es una página protegida.'
+    usuario = Usuario.query.filter_by(id=current_user.id).first()
+    return render_template('juegos.html', usuario=usuario)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    leerUsuarios()
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        if email in users and users[email]['CONTRASENA'] == password:
-            user = User(email)
-            login_user(user)
+        usuario = Usuario.query.filter_by(correo=email).first()
+        if usuario and usuario.contrasena == password:
+            login_user(usuario)
             return redirect(url_for('protected'))
         return 'Usuario o contraseña incorrectos'
     return render_template('login.html')
@@ -91,47 +90,33 @@ def crearCuenta():
 
 def crearUsuarioBD(usuario, contra, email, tipo):
     """SQLite y la tabla USUARIOS, parametros: ID, NOMBRE, CORREO,CONTRASENA, ADMIN"""
-    if tipo == "Admin":
-        admin = 1
-    else:
-        admin = 0
+    admin = True if tipo == "Admin" else False
     try:
-        conn = sqlite3.connect('usuarios.db')
-        cursor = conn.cursor()
+        # Crear una instancia del nuevo usuario
+        nuevo_usuario = Usuario(
+            nombre=usuario, correo=email, contrasena=contra, admin=admin)
 
-        # Insertar nuevo usuario
-        cursor.execute("INSERT INTO USUARIOS (NOMBRE, CORREO, CONTRASENA, ADMIN) VALUES (?, ?, ?, ?)",
-                       (usuario, email, contra, admin))
+        # Agregar el nuevo usuario a la sesión
+        db.session.add(nuevo_usuario)
 
-        conn.commit()
+        # Confirmar la transacción
+        db.session.commit()
         print("Usuario insertado con éxito")
 
-    except sqlite3.Error as error:
+        # Verificar que el usuario se haya insertado
+        usuario_insertado = Usuario.query.filter_by(correo=email).first()
+        if usuario_insertado:
+            print(
+                f"Usuario {usuario_insertado.nombre} insertado correctamente en la base de datos.")
+        else:
+            print("Error: El usuario no se insertó en la base de datos.")
+
+    except Exception as error:
         print(f"Error al insertar usuario: {error}")
+        db.session.rollback()  # Revertir en caso de error
 
     finally:
-        if conn:
-            conn.close()
-
-
-def leerUsuarios():
-    global users
-    users = {}
-    try:
-        conn = sqlite3.connect('usuarios.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM USUARIOS")
-        rows = cursor.fetchall()
-        for row in rows:
-            users[row[2]] = {'name': row[1],
-                             'password': row[3], 'admin': row[4]}
-        print(users)
-    except sqlite3.Error as error:
-        print(f"Error al leer usuarios: {error}")
-
-    finally:
-        if conn:
-            conn.close()
+        db.session.close()
 
 
 if __name__ == "__main__":
