@@ -62,7 +62,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        if email in users and users[email]['password'] == password:
+        if email in users and users[email]['CONTRASENA'] == password:
             user = User(email)
             login_user(user)
             return redirect(url_for('protected'))
@@ -74,14 +74,8 @@ def login():
 def apiLlamada():
     contra = request.args.get("_contra", type=str)
     email = request.args.get("_email", type=str)
-
-    if contra == "any_":
-        # Esto si es para todos los partidos, ya que tiene que hacer la peticion a otra API
-        print(f"Estos son los datos, {contra} y {email}")
-        return jsonify({"message": "Datos mal recibidos"}), 200
-    else:
-        print(f"Estos son los datos, contra: {contra} y email: {email}")
-        return jsonify({"contra": contra, "email": email}), 200
+    print(f"Estos son los datos, contra: {contra} y email: {email}")
+    return jsonify({"contra": contra, "email": email}), 200
 
 
 @app.route("/api/crearCuenta")
