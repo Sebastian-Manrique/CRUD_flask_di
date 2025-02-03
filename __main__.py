@@ -1,3 +1,4 @@
+from models import Juego
 from dbManager import DATABASE_URL, engine, Session
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_login import LoginManager
@@ -20,9 +21,9 @@ with app.app_context():
 
 # 1. Añadir funcionalidad de juegos para que se muestren y se añadan a la base de datos
 # 2. Para encriptar y comprobar la contraseña from werkzeug. security import generate_password hash, check_password hash
-# 3. Comprobar que el correo no esta siendo ya usado
+# 3. Añadir en el login el inicio de usuario o Admin, dependiendo de la cuenta te deja o no.
+# Haz clic para ver tu contraseña, en el apartado de juegos
 # 4. Añadir un nav personalizado para los usuarios iniados y los que no
-# Cuando cree un un usuario, que me rediriga a una pagina de "Todo ok"
 # Añadir si pasa el raton cerca de las burbujas estan se muevan
 # Cambiar empleado por usuario
 
@@ -54,7 +55,38 @@ def logout():
 @login_required
 def protected():
     usuario = Usuario.query.filter_by(id=current_user.id).first()
-    return render_template('juegos.html', usuario=usuario)
+    juegos = 0
+
+    esAdmin = usuario.admin
+    if esAdmin == 1:
+        juegos = Juego.query.all()
+    else:
+        juegos = Juego.query.filter_by(usuario_id=current_user.id).all()
+
+    return render_template('juegos.html', usuario=usuario, juegos=juegos)
+
+# Recargar la tabla de juegos
+
+
+@app.route('/api/juegos', methods=['GET'])
+@login_required
+def obtener_juegos():
+    usuario = Usuario.query.filter_by(id=current_user.id).first()
+
+    if usuario.admin:
+        juegos = Juego.query.all()
+    else:
+        juegos = Juego.query.filter_by(usuario_id=current_user.id).all()
+
+    juegos_json = [{
+        'id': juego.id,
+        'nombre': juego.nombre,
+        'precio': juego.precio,
+        'descripcion': juego.descripcion,
+        'usuario_id': juego.usuario_id
+    } for juego in juegos]
+
+    return jsonify(juegos_json)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -88,13 +120,13 @@ def crearCuenta():
     if crearUsuarioBD(usuario, contra, email, tipo) == True:
         return jsonify({"usuario": usuario, "contra": contra, "email": email, "tipo": tipo}), 200
     else:
-        return "error al crear el usuario", 404
+        return jsonify({"message": "Error, correo ya en uso"}), 409
 
 
 def crearUsuarioBD(usuario, contra, email, tipo):
     """SQLite y la tabla USUARIOS, parametros: ID, NOMBRE, CORREO,CONTRASENA, ADMIN"""
 
-    correo = Usuario.query.filter_by(email=email).first()
+    correo = Usuario.query.filter_by(correo=email).first()
 
     if correo:
         return False
@@ -112,7 +144,7 @@ def crearUsuarioBD(usuario, contra, email, tipo):
             # Confirmar la transacción
             db.session.commit()
 
-            return "Usuario insertado con éxito"
+            return True
             # DEBUG, Verificar que el usuario se haya insertado
             # usuario_insertado = Usuario.query.filter_by(correo=email).first()
             # if usuario_insertado:
@@ -127,6 +159,38 @@ def crearUsuarioBD(usuario, contra, email, tipo):
 
         finally:
             db.session.close()
+
+
+@app.route("/api/crearJuego")
+def crearJuego():
+    # Llamada de API para crear un juego
+    nombre = request.args.get("_nombre", type=str)
+    precio = request.args.get("_precio", type=int)
+    descripcion = request.args.get("_dscrp", type=str)
+    usuario_id = request.args.get("_userId", type=int)
+
+    return crear_juego(nombre, precio, descripcion, usuario_id)
+
+
+def crear_juego(nombre, precio, descripcion, usuario_id):
+    # La funcion para añadirlo a la BDD
+    if not all([nombre, precio, descripcion]):
+        return jsonify({"error": "Faltan datos"}), 400
+
+    nuevo_juego = Juego(
+        nombre=nombre,
+        precio=precio,
+        descripcion=descripcion,
+        usuario_id=usuario_id
+    )
+
+    try:
+        db.session.add(nuevo_juego)
+        db.session.commit()
+        return jsonify({"success": True, "message": "Juego creado exitosamente"}), 201
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"error": str(error)}), 500
 
 
 if __name__ == "__main__":

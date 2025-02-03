@@ -68,13 +68,14 @@ async function callCreate(usuario, contra, email, tipo) {
       `/api/crearCuenta?_usuario=${usuario}&_contra=${contra}&_email=${email}&_tipo=${tipo}`
     );
 
+    const data = await response.json();
+
+    if (data.message) {
+      window.alert("Error, correo ya en uso");
+    }
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    const data = await response.json();
-    //DEBUG
-    // console.log(data);
 
     // Para mostrar o no el gif
     document.getElementById("cargando").style.display = "block";

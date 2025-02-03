@@ -11,20 +11,41 @@
 
     <div class="center">
         <div class="parent">
-            <button id="botonModificar" onclick="">Modificar juego +</button>
+            <button id="botonModificar" onclick="">Modificar juego</button>
             <button id="botonCrearJuego" onclick="">Crear juego +</button>
             <button id="botonCerrarSesion"><a href="/logout">Cerrar sesión</a></button>
         </div>
     </div>
 
     <div id="juegos">
-
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Descripción</th>
+                    <th>ID de usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for juego in juegos %}
+                <tr>
+                    <td>{{ juego.id }}</td>
+                    <td>{{ juego.nombre }}</td>
+                    <td>{{ juego.precio }}</td>
+                    <td>{{ juego.descripcion }}</td>
+                    <td>{{ juego.usuario_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     <div id="tusDatos">
         <h2>Informacion de tu cuenta:</h2>
         <p>Nombre: {{usuario.nombre}}</p>
-        <p>ID: {{usuario.id}}</p>
+        <p>ID: <span id="usuarioId">{{usuario.id}}</span></p>
         <p>correo: {{usuario.correo}}</p>
         <p>Haz clic para ver tu contrasena {{usuario.contrasena}}</p>
         <p>Cuenta admin:
@@ -34,6 +55,7 @@
             No
             {% endif %}</p>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ url_for('static', filename='js/juegos.js') }}"></script>
 </main>
 {% endblock %}

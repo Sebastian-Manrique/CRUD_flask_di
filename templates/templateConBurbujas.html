@@ -16,10 +16,17 @@
 <body>
     <a href="/"><img id="flag" alt="ImagenMando" src="../static/img/mando.png"></a>
     <header>
-        <ul>
-            <li><a href="/inicio">Inicio</a></li>
-            <li><a href="/login">Iniciar sesión</a></li>
-        </ul>
+        <nav>
+            <ul>
+                <li><a href="/inicio">Inicio</a></li>
+                {% if usuario and usuario.nombre %}
+                <li><a href="/logout">Cerrar sesión</a></li>
+                <li>{{usuario.nombre}}</a></li>
+                {% else %}
+                <li><a href="/login">Iniciar sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
     </header>
 
     <main class="content">

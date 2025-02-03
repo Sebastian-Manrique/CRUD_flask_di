@@ -1,3 +1,5 @@
+# Archivo para las tablas de la BDD
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
@@ -19,6 +21,5 @@ class Juego(db.Model):
     nombre = db.Column(db.String, nullable=False)
     precio = db.Column(db.Float, nullable=False)
     descripcion = db.Column(db.String, nullable=False)
-    imagen = db.Column(db.String, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey(
         'usuarios.id'), nullable=False)
