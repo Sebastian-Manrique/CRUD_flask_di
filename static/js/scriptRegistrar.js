@@ -24,11 +24,6 @@ function botonMostrarContra() {
   document.getElementById("divBotonMostrar").style.display = "block";
 }
 
-function mostrarCargando() {
-  // Para mostrar o no el gif
-  document.getElementById("cargando").style.display = "block";
-}
-
 function crearUsuario() {
   var usuario = document.getElementById("usuarioCrear");
   var contra = document.getElementById("passCrear");
@@ -78,8 +73,12 @@ async function callCreate(usuario, contra, email, tipo) {
     }
 
     const data = await response.json();
-    // console.log(data); //DEBUG
-    mostrarCargando();
+    //DEBUG
+    // console.log(data);
+
+    // Para mostrar o no el gif
+    document.getElementById("cargando").style.display = "block";
+    document.getElementById("botonEnviar").hidden = true;
 
     // Esperar 1 segundos antes de redirigir
     await delay(1000);

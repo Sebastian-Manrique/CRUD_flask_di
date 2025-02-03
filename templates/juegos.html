@@ -2,16 +2,20 @@
 
 {% block title %}Juegos{% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/juegos.css') }}">
 {% endblock %}
 
 {% block content %}
 <main>
-    <h1>Hola {{usuario.nombre}} estos son tus juegos:</h1>
+    <h1>Hola 👋{{usuario.nombre}}, estos son tus juegos:</h1>
 
-    <button id="botonCrearJuego" onclick="crearJuego()">Crear juego +</button>
-
-    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar sesion</button>
+    <div class="center">
+        <div class="parent">
+            <button id="botonModificar" onclick="">Modificar juego +</button>
+            <button id="botonCrearJuego" onclick="">Crear juego +</button>
+            <button id="botonCerrarSesion"><a href="/logout">Cerrar sesión</a></button>
+        </div>
+    </div>
 
     <div id="juegos">
 
@@ -19,11 +23,16 @@
 
     <div id="tusDatos">
         <h2>Informacion de tu cuenta:</h2>
-        <p>{{usuario.nombre}}</p>
-        <p>{{usuario.id}}</p>
-        <p>{{usuario.correo}}</p>
-        <p>{{usuario.contrasena}}</p>
-        <p>{{usuario.admin}}</p>
+        <p>Nombre: {{usuario.nombre}}</p>
+        <p>ID: {{usuario.id}}</p>
+        <p>correo: {{usuario.correo}}</p>
+        <p>Haz clic para ver tu contrasena {{usuario.contrasena}}</p>
+        <p>Cuenta admin:
+            {% if usuario.admin %}
+            Si
+            {% else %}
+            No
+            {% endif %}</p>
     </div>
     <script src="{{ url_for('static', filename='js/juegos.js') }}"></script>
 </main>

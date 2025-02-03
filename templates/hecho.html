@@ -2,12 +2,23 @@
 
 {% block title %}Juegos{% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/hecho.css') }}">
 {% endblock %}
 
 {% block content %}
 <main>
-    <h1>Registrado con exito!</h1>
-    <img src="{{ url_for('static', filename='img/creada.gif') }}" alt="">
+    <h1 style="text-align: center;">Registrado con exito.</h1>
+
+    <img id="imagen" src="{{ url_for('static', filename='img/creada.gif') }}" alt="green-tick" height="400px"
+        width="400px">
+
+    <div class="container">
+        <div class="center">
+            <button id="botonIniciar">
+                <a href="{{ url_for('login') }}">Iniciar sesion</a>
+            </button>
+        </div>
+    </div>
+
 </main>
 {% endblock %}
