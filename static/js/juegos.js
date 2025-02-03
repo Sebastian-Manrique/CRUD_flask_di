@@ -44,3 +44,9 @@ document
       }
     }
   });
+
+function mostrarContra() {
+  //Boton para ver la contraseña del usuario, pero para el apartado del usuario
+  let passElement = document.getElementById("mostrarContra");
+  passElement.classList.toggle("blurred");
+}

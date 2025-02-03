@@ -22,7 +22,6 @@ with app.app_context():
 # 1. Añadir funcionalidad de juegos para que se muestren y se añadan a la base de datos
 # 2. Para encriptar y comprobar la contraseña from werkzeug. security import generate_password hash, check_password hash
 # 3. Añadir en el login el inicio de usuario o Admin, dependiendo de la cuenta te deja o no.
-# Haz clic para ver tu contraseña, en el apartado de juegos
 # 4. Añadir un nav personalizado para los usuarios iniados y los que no
 # Añadir si pasa el raton cerca de las burbujas estan se muevan
 # Cambiar empleado por usuario
@@ -169,7 +168,10 @@ def crearJuego():
     descripcion = request.args.get("_dscrp", type=str)
     usuario_id = request.args.get("_userId", type=int)
 
-    return crear_juego(nombre, precio, descripcion, usuario_id)
+    respuesta = crear_juego(nombre, precio, descripcion, usuario_id)
+
+    print(respuesta)
+    return respuesta
 
 
 def crear_juego(nombre, precio, descripcion, usuario_id):

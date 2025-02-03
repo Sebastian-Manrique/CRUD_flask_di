@@ -20,8 +20,9 @@
             <ul>
                 <li><a href="/inicio">Inicio</a></li>
                 {% if usuario and usuario.nombre %}
+                <li><a href="/protected">Tus juegos</a></li>
+                <li><a href="/protected#clicATusDatos">{{usuario.nombre}}</a></li>
                 <li><a href="/logout">Cerrar sesión</a></li>
-                <li>{{usuario.nombre}}</a></li>
                 {% else %}
                 <li><a href="/login">Iniciar sesión</a></li>
                 {% endif %}

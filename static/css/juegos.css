@@ -15,7 +15,7 @@ body {
   /* Burbujas del fondo*/
   position: relative;
   display: flex;
-  bottom: -80vh;
+  bottom: -25vh;
 }
 .bubbles span {
   /*El monton de burbujas*/
@@ -191,6 +191,22 @@ button a {
 }
 
 /*Boton del pop-up*/
-#popupButton{
+#popupButton {
   color: black;
+}
+
+.blurred {
+  /*Para mostrar o no la contraseña del usuario*/
+  filter: blur(8px);
+}
+
+#botonMostrarContra {
+  /*CSS para el boton de mostrar o no la contraseña para la parte del usuario de juegos*/
+  width: 10%;
+  padding: 10px;
+  background-color: #4c5a8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
