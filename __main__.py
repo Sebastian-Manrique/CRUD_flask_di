@@ -19,12 +19,13 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# 1. Añadir funcionalidad de juegos para que se muestren y se añadan a la base de datos
 # 2. Para encriptar y comprobar la contraseña from werkzeug. security import generate_password hash, check_password hash
 # 3. Añadir en el login el inicio de usuario o Admin, dependiendo de la cuenta te deja o no.
-# 4. Añadir un nav personalizado para los usuarios iniados y los que no
+# 4. Cambiar el boton iniciar sesion, que este en un borde y cuando este iniciada la sesion, que sea un boton rojo
+# Añadir que la tabla se recargue cuando se añada o se modifique un elemento
+# Cambiar los botones de modificar y eliminar juegos por iconos mas visuales
+# Añadir una pagina para "usurio o contraseña incorrecta"
 # Añadir si pasa el raton cerca de las burbujas estan se muevan
-# Cambiar empleado por usuario
 
 # Inicializar el LoginManager
 login_manager = LoginManager()
@@ -64,8 +65,6 @@ def protected():
 
     return render_template('juegos.html', usuario=usuario, juegos=juegos)
 
-# Recargar la tabla de juegos
-
 
 @app.route('/api/juegos', methods=['GET'])
 @login_required
@@ -93,10 +92,19 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        role = request.form['role']
+        admin = 1 if role == "admin" else 0
+        print(f"Es admin : " + role + "admin: {admin}")
         usuario = Usuario.query.filter_by(correo=email).first()
         if usuario and usuario.contrasena == password:
-            login_user(usuario)
-            return redirect(url_for('protected'))
+            # Aqui redirecciono al mismo lado, pero, si no rellenas el formulario correcto no te deja entrar
+            if admin and usuario.admin:
+                # Redirige al panel de admin
+                return redirect(login_user(usuario))
+
+            #
+            return redirect(login_user(usuario))
+
         return 'Usuario o contraseña incorrectos'
     return render_template('login.html')
 
@@ -164,11 +172,13 @@ def crearUsuarioBD(usuario, contra, email, tipo):
 def crearJuego():
     # Llamada de API para crear un juego
     nombre = request.args.get("_nombre", type=str)
-    precio = request.args.get("_precio", type=int)
+    precio = request.args.get("_precio", type=float)
     descripcion = request.args.get("_dscrp", type=str)
     usuario_id = request.args.get("_userId", type=int)
 
     respuesta = crear_juego(nombre, precio, descripcion, usuario_id)
+
+    get_juegos()
 
     print(respuesta)
     return respuesta
@@ -176,7 +186,7 @@ def crearJuego():
 
 def crear_juego(nombre, precio, descripcion, usuario_id):
     # La funcion para añadirlo a la BDD
-    if not all([nombre, precio, descripcion]):
+    if not all([nombre, descripcion]) or precio is None:
         return jsonify({"error": "Faltan datos"}), 400
 
     nuevo_juego = Juego(
@@ -193,6 +203,102 @@ def crear_juego(nombre, precio, descripcion, usuario_id):
     except Exception as error:
         db.session.rollback()
         return jsonify({"error": str(error)}), 500
+
+
+@app.route("/api/modificarJuego")
+def modificarJuego():
+    # Llamada de API para modificar un juego
+    juego_id = request.args.get("_id", type=int)
+    nombre = request.args.get("_nombre", type=str)
+    precio = request.args.get("_precio", type=float)
+    descripcion = request.args.get("_dscrp", type=str)
+
+    respuesta = modificar_juego(juego_id, nombre, precio, descripcion)
+
+    get_juegos()
+
+    print(respuesta)
+    return respuesta
+
+
+def modificar_juego(juego_id, nombre, precio, descripcion):
+    # La funcion para modificar un juego de la BDD
+    if not all([juego_id, nombre, descripcion]) or precio is None:
+        print(juego_id, nombre, precio, descripcion)
+        return jsonify({"error": "Faltan datos"}), 400
+
+    # Buscar el juego en la base de datos
+    juego_a_modificar = Juego.query.filter_by(id=juego_id).first()
+
+    if not juego_a_modificar:
+        return jsonify({"error": "Juego no encontrado"}), 404
+
+    try:
+        # Modificar los valores del juego
+        juego_a_modificar.nombre = nombre
+        juego_a_modificar.precio = precio
+        juego_a_modificar.descripcion = descripcion
+
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+
+        return jsonify({"success": True, "message": "Juego modificado exitosamente"}), 200
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"error": str(error)}), 500
+
+
+@app.route("/api/eliminarJuego")
+def eliminarJuego():
+    # Llamada de API para modificar un juego
+    juego_id = request.args.get("_id", type=int)
+
+    respuesta = eliminar_juego(juego_id)
+    get_juegos()
+    print(respuesta)
+    return respuesta
+
+
+def eliminar_juego(juego_id):
+    # La funcion para modificar un juego de la BDD
+    if not all([juego_id]):
+        print(juego_id)
+        return jsonify({"error": "Faltan datos"}), 400
+
+    # Buscar el juego en la base de datos
+    juego_a_modificar = Juego.query.filter_by(id=juego_id).first()
+
+    if not juego_a_modificar:
+        return jsonify({"error": "Juego no encontrado"}), 404
+
+    try:
+        # Elimina el juego de la BDD
+        db.session.delete(juego_a_modificar)
+        db.session.commit()
+
+        return jsonify({"success": True, "message": "Juego eliminado exitosamente"}), 200
+    except Exception as error:
+        db.session.rollback()
+        return jsonify({"error": str(error)}), 500
+
+
+@app.route('/get_juegos', methods=['GET'])
+# Recargar la tabla de juegos
+def get_juegos():
+    # Consulta todos los juegos de la base de datos
+    juegos = Juego.query.all()
+
+    # Crear una lista de diccionarios con los datos de cada juego
+    juegos_list = [{
+        'id': juego.id,
+        'nombre': juego.nombre,
+        'precio': juego.precio,
+        'descripcion': juego.descripcion,
+        'usuario_id': juego.usuario_id
+    } for juego in juegos]
+
+    # Retornar los datos en formato JSON
+    return jsonify(juegos_list)
 
 
 if __name__ == "__main__":

@@ -11,14 +11,13 @@
 
     <div class="center">
         <div class="parent">
-            <button id="botonModificar" onclick="">Modificar juego</button>
-            <button id="botonCrearJuego" onclick="">Crear juego +</button>
+            <button id="botonCrearJuego">Crear juego +</button>
             <button id="botonCerrarSesion" onclick="window.location.href='/logout'">Cerrar sesión</button>
         </div>
     </div>
 
     <div id="juegos">
-        <table border="1">
+        <table border="1" id="miTabla">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -26,6 +25,7 @@
                     <th>Precio</th>
                     <th>Descripción</th>
                     <th>ID de usuario</th>
+                    <th colspan="2">&NonBreakingSpace;</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +35,19 @@
                     <td>{{ juego.nombre }}</td>
                     <td>{{ juego.precio }}</td>
                     <td>{{ juego.descripcion }}</td>
-                    <td>{{ juego.usuario_id }}</td>
+                    <td>
+                        {% if usuario.admin %}
+                        {{ juego.usuario_id }}
+                        {% else %}
+
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="botonModificar">Modificar juego</button>
+                    </td>
+                    <td>
+                        <button class="botonEliminar">Eliminar juego</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -48,16 +60,16 @@
             <p>Nombre: {{usuario.nombre}}</p>
             <p>ID: <span id="usuarioId">{{usuario.id}}</span></p>
             <p>correo: {{usuario.correo}}</p>
-            <button id="botonMostrarContra" onclick="mostrarContra()">Mostrar/Ocultar</button>
-            <p id="mostrarContra" class="blurred">{{usuario.contrasena}}</p>
-
-
             <p>Cuenta admin:
                 {% if usuario.admin %}
                 Si
                 {% else %}
                 No
                 {% endif %}</p>
+            <br>
+            <button id="botonMostrarContra" onclick="mostrarContra()">Mostrar contraseña</button>
+            <br> <br>
+            <p id="mostrarContra" class="blurred">{{usuario.contrasena}}</p>
         </div>
     </section>
 
