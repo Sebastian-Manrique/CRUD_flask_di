@@ -150,7 +150,7 @@ footer a {
 }
 
 #botonCrearJuego {
-  width: 75%;
+  width: 15%;
   padding: 10px;
   background-color: #4caf50;
   color: white;
@@ -159,14 +159,22 @@ footer a {
   cursor: pointer;
 }
 
+#botonCrearJuego:hover {
+  background-color: #38813a;
+}
+
 #botonCerrarSesion {
-  width: 75%;
+  width: 100%;
   padding: 10px;
   background-color: #c31313;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+#botonCerrarSesion:hover {
+  background-color: #8e0d0d;
 }
 
 h1 {
@@ -275,4 +283,21 @@ button a {
 /* Estilo para las filas impares */
 #miTabla tr:nth-child(odd) {
   background-color: #5555555c; /* Fondo alterno suave para las filas */
+}
+#addIcon {
+  /*Id del icono de añadir juego*/
+  height: 25px;
+}
+#logoutIcon {
+  /*Id del icono de cerrar sesion*/
+  height: 15px;
+}
+
+#eliminateIcon {
+  /*Id del icono de eliminar juego*/
+  height: 15px;
+}
+#modifyIcon {
+  /*Id del icono de modificar juego*/
+  height: 15px;
 }

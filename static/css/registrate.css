@@ -59,7 +59,7 @@ input[type="submit"]:hover {
 .switch-container {
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   padding-bottom: 17px;
 }
 
@@ -302,6 +302,27 @@ footer a {
   align-items: center;
 }
 
-#cargando{
+#cargando {
   padding-top: 25px;
+}
+
+#botonCerrarSesion {
+  /*Id de cerrar sesion*/
+  width: 100%;
+  padding: 10px;
+  background-color: #c31313;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#botonCerrarSesion:hover {
+  /*Hover de cerrar sesion*/
+  background-color: #8e0d0d;
+}
+
+#logoutIcon {
+  /*Id del icono de cerrar sesion*/
+  height: 15px;
 }

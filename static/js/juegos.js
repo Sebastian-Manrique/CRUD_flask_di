@@ -124,8 +124,10 @@ document.querySelectorAll(".botonModificar").forEach((boton) => {
         const data = await response.json();
 
         //DEBUG
-        console.log(data);
+        // console.log(data);
+        console.log("Recargando . . . .");
         recargarTabla;
+        console.log("Recargado!");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -181,37 +183,43 @@ document.querySelectorAll(".botonEliminar").forEach((boton) => {
 });
 
 function recargarTabla() {
-  fetch("/get_juegos") // Hacemos la solicitud a la ruta que devuelve los juegos
-    .then((response) => response.json()) // Convertimos la respuesta a JSON
-    .then((juegos) => {
-      // Seleccionamos el tbody donde vamos a actualizar los datos
-      const tbody = document.querySelector("#miTabla tbody");
-      tbody.innerHTML = ""; // Limpiamos la tabla
+  console.log("dentro de recargar tabla");
+  // fetch("/get_juegos") // Hacemos la solicitud a la ruta que devuelve los juegos
+  //   .then((response) => response.json()) // Convertimos la respuesta a JSON
+  //   .then((juegos) => {
+  //     // Seleccionamos el tbody donde vamos a actualizar los datos
+  //     const tbody = document.querySelector("#miTabla tbody");
+  //     tbody.innerHTML = ""; // Limpiamos la tabla
 
-      // Iteramos sobre los juegos y creamos las filas de la tabla
-      juegos.forEach((juego) => {
-        const row = document.createElement("tr");
+  //     // Iteramos sobre los juegos y creamos las filas de la tabla
+  //     juegos.forEach((juego) => {
+  //       const row = document.createElement("tr");
 
-        // Creamos cada celda de la fila
-        row.innerHTML = `
-                  <td>${juego.id}</td>
-                  <td>${juego.nombre}</td>
-                  <td>${juego.precio}</td>
-                  <td>${juego.descripcion}</td>
-                  <td>${juego.usuario_id}</td>
-                  <td><button class="botonModificar">Modificar juego</button></td>
-                  <td><button class="botonEliminar">Eliminar juego</button></td>
-              `;
+  //       // Creamos cada celda de la fila
+  //       row.innerHTML = `
+  //                 <td>${juego.id}</td>
+  //                 <td>${juego.nombre}</td>
+  //                 <td>${juego.precio}</td>
+  //                 <td>${juego.descripcion}</td>
+  //                 <td>${juego.usuario_id}</td>
+  //                 <td><button class="botonModificar">Modificar juego</button></td>
+  //                 <td><button class="botonEliminar">Eliminar juego</button></td>
+  //             `;
 
-        // Añadimos la fila al tbody
-        tbody.appendChild(row);
+  //       // Añadimos la fila al tbody
+  //       tbody.appendChild(row);
 
-        console.log("Juego ID: " + juego.id);
-        console.log("Nombre: " + juego.nombre);
-        console.log("Precio: " + juego.precio);
-        console.log("Descripción: " + juego.descripcion);
-        console.log("ID Usuario: " + juego.usuario_id);
-      });
-    })
-    .catch((error) => console.error("Error al cargar los juegos:", error));
+  //       console.log("Juego ID: " + juego.id);
+  //       console.log("Nombre: " + juego.nombre);
+  //       console.log("Precio: " + juego.precio);
+  //       console.log("Descripción: " + juego.descripcion);
+  //       console.log("ID Usuario: " + juego.usuario_id);
+  //     });
+  //   })
+  //   .catch((error) => console.error("Error al cargar los juegos:", error));
+
+  fetch("/get_juegos")
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error("Error en la API:", error));
 }

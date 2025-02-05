@@ -10,10 +10,8 @@
     <h1>Hola 👋{{usuario.nombre}}, estos son tus juegos:</h1>
 
     <div class="center">
-        <div class="parent">
-            <button id="botonCrearJuego">Crear juego +</button>
-            <button id="botonCerrarSesion" onclick="window.location.href='/logout'">Cerrar sesión</button>
-        </div>
+        <button id="botonCrearJuego">Crear juego <img src="{{ url_for('static', filename='img/add.png') }}"
+                alt="addIcon" id="addIcon"> </button>
     </div>
 
     <div id="juegos">
@@ -43,10 +41,14 @@
                         {% endif %}
                     </td>
                     <td>
-                        <button class="botonModificar">Modificar juego</button>
+                        <button class="botonModificar">Modificar juego &NonBreakingSpace;<img
+                                src="{{url_for('static', filename='img/modify.png')}}" alt="modifyIcon"
+                                id="modifyIcon"></button>
                     </td>
                     <td>
-                        <button class="botonEliminar">Eliminar juego</button>
+                        <button class="botonEliminar">Eliminar juego &NonBreakingSpace;<img
+                                src="{{url_for('static', filename='img/delete.png')}}" alt="eliminateIcon"
+                                id="modifyIcon"></button></button>
                     </td>
                 </tr>
                 {% endfor %}

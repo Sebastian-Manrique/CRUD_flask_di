@@ -97,14 +97,8 @@ def login():
         print(f"Es admin : " + role + "admin: {admin}")
         usuario = Usuario.query.filter_by(correo=email).first()
         if usuario and usuario.contrasena == password:
-            # Aqui redirecciono al mismo lado, pero, si no rellenas el formulario correcto no te deja entrar
-            if admin and usuario.admin:
-                # Redirige al panel de admin
-                return redirect(login_user(usuario))
-
-            #
-            return redirect(login_user(usuario))
-
+            login_user(usuario)
+            return redirect(url_for('protected'))
         return 'Usuario o contraseña incorrectos'
     return render_template('login.html')
 
@@ -282,7 +276,7 @@ def eliminar_juego(juego_id):
         return jsonify({"error": str(error)}), 500
 
 
-@app.route('/get_juegos', methods=['GET'])
+@app.route("/get_juegos", methods=['GET'])
 # Recargar la tabla de juegos
 def get_juegos():
     # Consulta todos los juegos de la base de datos
@@ -298,6 +292,7 @@ def get_juegos():
     } for juego in juegos]
 
     # Retornar los datos en formato JSON
+    # print(juegos_list)
     return jsonify(juegos_list)
 
 
