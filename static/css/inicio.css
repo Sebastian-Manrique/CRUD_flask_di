@@ -156,10 +156,18 @@ p {
   color: white;
 }
 
+li a {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  gap: 8px; /* Espacio entre el texto y la imagen */
+  text-decoration: none; /* Opcional: elimina el subrayado */
+}
+
 #loginIcon {
-  /*css del icono del login*/
-  height: 50px;
-  border: solid 1px green;
+  /*css del icono del usuario*/
+  width: 20px;
+  height: 20px;
 }
 
 #botonCerrarSesion {

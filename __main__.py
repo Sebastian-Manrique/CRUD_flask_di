@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import Juego
 from dbManager import DATABASE_URL, engine, Session
 from flask import Flask, render_template, request, jsonify, redirect, url_for
@@ -20,12 +21,8 @@ with app.app_context():
     db.create_all()
 
 # 2. Para encriptar y comprobar la contraseña from werkzeug. security import generate_password hash, check_password hash
-# 3. Añadir en el login el inicio de usuario o Admin, dependiendo de la cuenta te deja o no.
-# 4. Cambiar el boton iniciar sesion, que este en un borde y cuando este iniciada la sesion, que sea un boton rojo
-# Añadir que la tabla se recargue cuando se añada o se modifique un elemento
-# Cambiar los botones de modificar y eliminar juegos por iconos mas visuales
 # Añadir una pagina para "usurio o contraseña incorrecta"
-# Añadir si pasa el raton cerca de las burbujas estan se muevan
+# Añadir si pasa el raton cerca de las burbujas estan se muevan.
 
 # Inicializar el LoginManager
 login_manager = LoginManager()
@@ -94,12 +91,17 @@ def login():
         password = request.form['password']
         role = request.form['role']
         admin = 1 if role == "admin" else 0
-        print(f"Es admin : " + role + "admin: {admin}")
+
         usuario = Usuario.query.filter_by(correo=email).first()
-        if usuario and usuario.contrasena == password:
+
+        # Verifica la contraseña encriptada
+        if usuario and check_password_hash(usuario.contrasena, password):
             login_user(usuario)
             return redirect(url_for('protected'))
-        return 'Usuario o contraseña incorrectos'
+
+        # Retorna un error 401 si falla el login
+        return 'Usuario o contraseña incorrectos', 401
+
     return render_template('login.html')
 
 
@@ -118,8 +120,12 @@ def crearCuenta():
     email = request.args.get("_email", type=str)
     tipo = request.args.get("_tipo", type=str)
 
-    if crearUsuarioBD(usuario, contra, email, tipo) == True:
-        return jsonify({"usuario": usuario, "contra": contra, "email": email, "tipo": tipo}), 200
+    # Encriptar la contraseña antes de guardarla
+    hashed_password = generate_password_hash(contra)
+
+    # Guardamos la contraseña encriptada
+    if crearUsuarioBD(usuario, hashed_password, email, tipo):
+        return jsonify({"usuario": usuario, "email": email, "tipo": tipo}), 200
     else:
         return jsonify({"message": "Error, correo ya en uso"}), 409
 
@@ -172,8 +178,6 @@ def crearJuego():
 
     respuesta = crear_juego(nombre, precio, descripcion, usuario_id)
 
-    get_juegos()
-
     print(respuesta)
     return respuesta
 
@@ -208,8 +212,6 @@ def modificarJuego():
     descripcion = request.args.get("_dscrp", type=str)
 
     respuesta = modificar_juego(juego_id, nombre, precio, descripcion)
-
-    get_juegos()
 
     print(respuesta)
     return respuesta
@@ -248,7 +250,7 @@ def eliminarJuego():
     juego_id = request.args.get("_id", type=int)
 
     respuesta = eliminar_juego(juego_id)
-    get_juegos()
+
     print(respuesta)
     return respuesta
 

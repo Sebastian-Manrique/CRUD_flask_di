@@ -25,11 +25,40 @@ function botonMostrarContra() {
 }
 
 function crearUsuario() {
-  var usuario = document.getElementById("usuarioCrear");
-  var contra = document.getElementById("passCrear");
-  var confirmarContra = document.getElementById("passCrearConfirmar");
-  var email = document.getElementById("emailCrear");
+  let usuario = document.getElementById("usuarioCrear").value;
+  let contra = document.getElementById("passCrear").value;
+  let confirmarContra = document.getElementById("passCrearConfirmar").value;
+  let email = document.getElementById("emailCrear").value;
   var usuarioTipo = document.getElementById("seleccionCuenta").innerHTML;
+  /*
+
+async function crearUsuario() {
+    let usuario = document.getElementById("usuarioCrear").value;
+    let email = document.getElementById("emailCrear").value;
+    let pass = document.getElementById("passCrear").value;
+    let passConfirm = document.getElementById("passCrearConfirmar").value;
+
+    if (pass !== passConfirm) {
+        alert("Las contraseñas no coinciden");
+        return;
+    }
+
+    try {
+        let response = await fetch(`/api/crearCuenta?_usuario=${usuario}&_contra=${encodeURIComponent(pass)}&_email=${email}&_tipo=usuario`);
+        let data = await response.json();
+
+        if (response.ok) {
+            alert("Cuenta creada exitosamente");
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error en la solicitud");
+    }
+}
+
+*/
 
   if (
     contra.value == "" ||
@@ -57,15 +86,17 @@ function crearUsuario() {
   //     "\nTipo de usuario: " +
   //     usuarioTipo
   // );
-  callCreate(usuario.value, contra.value, email.value, usuarioTipo);
+  callCreate(usuario, contra, email, usuarioTipo);
 }
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 async function callCreate(usuario, contra, email, tipo) {
   try {
-    const response = await fetch(
-      `/api/crearCuenta?_usuario=${usuario}&_contra=${contra}&_email=${email}&_tipo=${tipo}`
+    let response = await fetch(
+      `/api/crearCuenta?_usuario=${usuario}&_contra=${encodeURIComponent(
+        contra
+      )}&_email=${email}&_tipo=${tipo}`
     );
 
     const data = await response.json();

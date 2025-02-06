@@ -21,12 +21,16 @@
                 <li><a href="/inicio">Inicio</a></li>
                 {% if usuario and usuario.nombre %}
                 <li><a href="/protected">Tus juegos</a></li>
-                <li><a href="/protected#clicATusDatos">{{usuario.nombre}}</a></li>
-                <li> <button id="botonCerrarSesion" onclick="window.location.href='/logout'">Cerrar sesión &VeryThinSpace; <img src="{{url_for('static', filename='img/logout.png')}}" alt="logoutIcon" id="logoutIcon"></button>
+                <li><a href="/protected#clicATusDatos">
+                        {{usuario.nombre}}
+                        <img src="{{url_for('static', filename='img/login.png')}}" alt="loginImg" id="loginIcon"></a>
+                </li>
+                <li> <button id="botonCerrarSesion" onclick="window.location.href='/logout'">Cerrar sesión
+                        &VeryThinSpace; <img src="{{url_for('static', filename='img/logout.png')}}" alt="logoutIcon"
+                            id="logoutIcon"></button>
                 </li>
                 {% else %}
-                <li><a href="/login"><img src="{{url_for('static', filename='img/login.png')}}" alt="loginImg"
-                            id="loginIcon"></a></li>
+                <li><a href="/login">Iniciar sesión</a></li>
                 {% endif %}
             </ul>
         </nav>

@@ -22,8 +22,10 @@
                     <th>Nombre</th>
                     <th>Precio</th>
                     <th>Descripción</th>
-                    <th>ID de usuario</th>
-                    <th colspan="2">&NonBreakingSpace;</th>
+                    {% if usuario.admin %}
+                    <th>Usuario ID</th>
+                    {% endif %}
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,22 +35,19 @@
                     <td>{{ juego.nombre }}</td>
                     <td>{{ juego.precio }}</td>
                     <td>{{ juego.descripcion }}</td>
+                    {% if usuario.admin %}
+                    <td>{{ juego.usuario_id }}</td>
+                    {% endif %}
                     <td>
-                        {% if usuario.admin %}
-                        {{ juego.usuario_id }}
-                        {% else %}
-
-                        {% endif %}
-                    </td>
-                    <td>
-                        <button class="botonModificar">Modificar juego &NonBreakingSpace;<img
-                                src="{{url_for('static', filename='img/modify.png')}}" alt="modifyIcon"
-                                id="modifyIcon"></button>
-                    </td>
-                    <td>
-                        <button class="botonEliminar">Eliminar juego &NonBreakingSpace;<img
-                                src="{{url_for('static', filename='img/delete.png')}}" alt="eliminateIcon"
-                                id="modifyIcon"></button></button>
+                        <button class="botonModificar">Modificar juego
+                            <img src="{{ url_for('static', filename='img/modify.png') }}" alt="modifyIcon"
+                                id="modifyIcon">
+                        </button>
+                        <!-- <div style="height: 5px;"></div> -->
+                        <button class="botonEliminar">Eliminar juego
+                            <img src="{{ url_for('static', filename='img/delete.png') }}" alt="eliminateIcon"
+                                id="modifyIcon">
+                        </button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -64,10 +63,11 @@
             <p>correo: {{usuario.correo}}</p>
             <p>Cuenta admin:
                 {% if usuario.admin %}
-                Si
+                <span id="adminBool">Si</span>
                 {% else %}
-                No
-                {% endif %}</p>
+                <span id="adminBool">No</span>
+                {% endif %}
+            </p>
             <br>
             <button id="botonMostrarContra" onclick="mostrarContra()">Mostrar contraseña</button>
             <br> <br>

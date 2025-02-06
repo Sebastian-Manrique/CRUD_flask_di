@@ -1,8 +1,5 @@
 //#################### Script creado por Sebastian Manrique ####################
 
-//variable para recargar la tabla
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
 document
   .getElementById("botonCrearJuego")
   .addEventListener("click", async function () {
@@ -20,20 +17,28 @@ document
       confirmButtonText: "Crear juego",
       confirmButtonColor: "#4cb052",
       preConfirm: () => {
-        return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
-          document.getElementById("swal-input3").value,
-        ];
+        // Obtener los valores de los campos
+        const titulo = document.getElementById("swal-input1").value;
+        const precio = document.getElementById("swal-input2").value;
+        const descrp = document.getElementById("swal-input3").value;
+
+        // Validaciones
+        if (precio.includes(",")) {
+          alert("El precio contiene una coma, solo se pueden poner un punto.");
+
+          return false; // Evita que el pop-up se cierre
+        } else if (titulo === "" || descrp === "") {
+          alert("Rellena todos los datos.");
+
+          return false; // Evita que el pop-up se cierre
+        }
+        // Si las validaciones pasan, devolver los valores
+        return [titulo, precio, descrp];
       },
     });
 
-    precio = "" + formValues[1];
+    // Si formValues es null o no está vacío, continuar con el proceso
     if (formValues) {
-      if (precio.includes(",")) {
-        alert("El precio contiene una coma");
-        return false; // Evita que el se cierre
-      }
       Swal.fire({
         title: "Datos recibidos",
         html: `Nombre: ${formValues[0]}<br>Precio: ${formValues[1]} € <br>Descripción: ${formValues[2]}`,
@@ -51,7 +56,8 @@ document
         const data = await response.json();
 
         //DEBUG
-        console.log(data);
+        // console.log(data);
+        recargarTabla();
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -71,10 +77,10 @@ function mostrarContra() {
 }
 
 // Selecciona todos los botones con la clase "botonModificar" para modificar un juego
-document.querySelectorAll(".botonModificar").forEach((boton) => {
-  boton.addEventListener("click", async function () {
+document.addEventListener("click", async function (event) {
+  if (event.target.classList.contains("botonModificar")) {
     // Encuentra la fila en la que se hizo clic
-    let fila = this.closest("tr");
+    let fila = event.target.closest("tr");
     let celdas = fila.cells;
 
     // Extrae los valores de las celdas
@@ -100,7 +106,7 @@ document.querySelectorAll(".botonModificar").forEach((boton) => {
       preConfirm: () => {
         precio = "" + document.getElementById("swal-input2").value;
         if (precio.includes(",")) {
-          alert("El precio contiene una coma");
+          alert("El precio contiene una coma, solo se pueden poner un punto.");
           return false; // Evita que el se cierre
         } else {
           return {
@@ -125,9 +131,7 @@ document.querySelectorAll(".botonModificar").forEach((boton) => {
 
         //DEBUG
         // console.log(data);
-        console.log("Recargando . . . .");
-        recargarTabla;
-        console.log("Recargado!");
+        recargarTabla();
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -135,12 +139,12 @@ document.querySelectorAll(".botonModificar").forEach((boton) => {
         console.error("Error:", error);
       }
     }
-  });
+  }
 });
 
-document.querySelectorAll(".botonEliminar").forEach((boton) => {
-  //Funcion para eliminar un juego de la BDD
-  boton.addEventListener("click", async function () {
+document.addEventListener("click", async function (event) {
+  if (event.target.classList.contains("botonEliminar")) {
+    //Funcion para eliminar un juego de la BDD
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Esta acción no se puede deshacer.",
@@ -159,7 +163,7 @@ document.querySelectorAll(".botonEliminar").forEach((boton) => {
         });
 
         // Encuentra la fila en la que se hizo clic
-        let fila = this.closest("tr");
+        let fila = event.target.closest("tr");
         let celdas = fila.cells;
 
         // Extrae el id de la celda
@@ -170,6 +174,7 @@ document.querySelectorAll(".botonEliminar").forEach((boton) => {
           const response = await fetch(`/api/eliminarJuego?_id=${idJuego}`);
           //DEBUG
           // console.log(data);
+          recargarTabla();
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -178,48 +183,49 @@ document.querySelectorAll(".botonEliminar").forEach((boton) => {
         }
       }
     });
-    recargarTabla;
-  });
+  }
 });
 
 function recargarTabla() {
-  console.log("dentro de recargar tabla");
-  // fetch("/get_juegos") // Hacemos la solicitud a la ruta que devuelve los juegos
-  //   .then((response) => response.json()) // Convertimos la respuesta a JSON
-  //   .then((juegos) => {
-  //     // Seleccionamos el tbody donde vamos a actualizar los datos
-  //     const tbody = document.querySelector("#miTabla tbody");
-  //     tbody.innerHTML = ""; // Limpiamos la tabla
+  var usuarioEsAdmin = document.getElementById("adminBool").textContent;
+  var usuarioId = document.getElementById("usuarioId").textContent;
+  fetch("/get_juegos") // Hacemos la solicitud a la ruta que devuelve los juegos
+    .then((response) => response.json()) // Convertimos la respuesta a JSON
+    .then((juegos) => {
+      // Seleccionamos el tbody donde vamos a actualizar los datos
+      const tbody = document.querySelector("#miTabla tbody");
+      tbody.innerHTML = ""; // Limpiamos la tabla
 
-  //     // Iteramos sobre los juegos y creamos las filas de la tabla
-  //     juegos.forEach((juego) => {
-  //       const row = document.createElement("tr");
+      // Iteramos sobre los juegos y creamos las filas de la tabla
+      juegos.forEach((juego) => {
+        const row = document.createElement("tr");
 
-  //       // Creamos cada celda de la fila
-  //       row.innerHTML = `
-  //                 <td>${juego.id}</td>
-  //                 <td>${juego.nombre}</td>
-  //                 <td>${juego.precio}</td>
-  //                 <td>${juego.descripcion}</td>
-  //                 <td>${juego.usuario_id}</td>
-  //                 <td><button class="botonModificar">Modificar juego</button></td>
-  //                 <td><button class="botonEliminar">Eliminar juego</button></td>
-  //             `;
-
-  //       // Añadimos la fila al tbody
-  //       tbody.appendChild(row);
-
-  //       console.log("Juego ID: " + juego.id);
-  //       console.log("Nombre: " + juego.nombre);
-  //       console.log("Precio: " + juego.precio);
-  //       console.log("Descripción: " + juego.descripcion);
-  //       console.log("ID Usuario: " + juego.usuario_id);
-  //     });
-  //   })
-  //   .catch((error) => console.error("Error al cargar los juegos:", error));
-
-  fetch("/get_juegos")
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error("Error en la API:", error));
+        if (usuarioEsAdmin == "Si") {
+          // Creamos cada celda de la fila
+          row.innerHTML = `
+                  <td>${juego.id}</td>
+                  <td>${juego.nombre}</td>
+                  <td>${juego.precio}</td>
+                  <td>${juego.descripcion}</td>
+                  <td>${juego.usuario_id}</td>
+                  <td><button class="botonModificar">Modificar juego</button></td>
+                  <td><button class="botonEliminar">Eliminar juego</button></td>
+              `;
+        } else {
+          if (juego.usuario_id == usuarioId) {
+            row.innerHTML = `
+            <td>${juego.id}</td>
+            <td>${juego.nombre}</td>
+            <td>${juego.precio}</td>
+            <td>${juego.descripcion}</td>
+            <td><button class="botonModificar">Modificar juego</button></td>
+            <td><button class="botonEliminar">Eliminar juego</button></td>
+        `;
+          }
+        }
+        // Añadimos la fila al tbody
+        tbody.appendChild(row);
+      });
+    })
+    .catch((error) => console.error("Error al cargar los juegos:", error));
 }

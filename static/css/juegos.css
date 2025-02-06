@@ -153,10 +153,19 @@ footer a {
   width: 15%;
   padding: 10px;
   background-color: #4caf50;
-  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  gap: 6px; /* Espacio entre el texto y el icono */
+  padding: 8px 12px; /* Ajusta el padding para mejor apariencia */
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
 }
 
 #botonCrearJuego:hover {
@@ -269,12 +278,6 @@ button a {
   background-color: #4f95d63f; /* Color de fondo suave para las cabeceras */
 }
 
-#miTabla th:last-child {
-  /* Elimina el borde superior */
-  border-top: none;
-  background-color: transparent;
-}
-
 /* Estilo para las filas alternas */
 #miTabla tr:nth-child(even) {
   background-color: #6666664d; /* Fondo alterno suave para las filas */
@@ -300,4 +303,30 @@ button a {
 #modifyIcon {
   /*Id del icono de modificar juego*/
   height: 15px;
+}
+
+li a {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  gap: 8px; /* Espacio entre el texto y la imagen */
+  text-decoration: none; /* Opcional: elimina el subrayado */
+}
+
+#loginIcon {
+  /*css del icono del usuario*/
+  width: 20px;
+  height: 20px;
+}
+
+.botonEliminar .botonModificar {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  gap: 6px; /* Espacio entre el texto y el icono */
+  padding: 8px 12px; /* Ajusta el padding para mejor apariencia */
+}
+
+button img {
+  height: 20px;
 }
