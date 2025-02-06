@@ -20,9 +20,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# 2. Para encriptar y comprobar la contraseña from werkzeug. security import generate_password hash, check_password hash
-# Añadir una pagina para "usurio o contraseña incorrecta"
-# Añadir si pasa el raton cerca de las burbujas estan se muevan.
+# Añadir si pasa el raton cerca de las burbujas estan se muevan
 
 # Inicializar el LoginManager
 login_manager = LoginManager()
@@ -100,7 +98,7 @@ def login():
             return redirect(url_for('protected'))
 
         # Retorna un error 401 si falla el login
-        return 'Usuario o contraseña incorrectos', 401
+        return render_template('error.html'), 401
 
     return render_template('login.html')
 

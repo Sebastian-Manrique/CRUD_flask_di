@@ -1,0 +1,23 @@
+{% extends "templateConBurbujas.html" %}
+
+{% block title %}Error{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+{% endblock %}
+
+{% block content %}
+<main>
+    <h1 style="text-align: center;">Usuario o contraseña incorrectos</h1>
+
+    <img id="imagen" src="{{ url_for('static', filename='img/errorRex.gif') }}" alt="green-tick" height="400px">
+
+    <div class="container">
+        <div class="center">
+            <button id="botonIniciar">
+                <a href="{{ url_for('login') }}">Iniciar sesion</a>
+            </button>
+        </div>
+    </div>
+
+</main>
+{% endblock %}

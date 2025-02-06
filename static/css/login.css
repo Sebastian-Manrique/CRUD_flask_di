@@ -101,7 +101,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 0 10px #4fc3dc44, 0 0 50px #4fc3dc, 0 0 100px #4fc3dc;
   animation: animate 15s linear infinite;
-  animation-duration: calc(100s / var(--i));
+  animation-duration: calc(120s / var(--i));
 }
 .container .bubbles span {
   /*El monton de burbujas*/
@@ -113,7 +113,7 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 0 10px #4fc3dc44, 0 0 50px #4fc3dc, 0 0 100px #4fc3dc;
   animation: animate2 15s linear infinite;
-  animation-duration: calc(100s / var(--i));
+  animation-duration: calc(120s / var(--i));
 }
 .bubbles span:nth-child(even) {
   /*aplica estilos específicos a todos los elementos <span> que son hijos pares de bubble*/
